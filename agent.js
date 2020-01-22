@@ -18,9 +18,10 @@ function announce() {
 
 function delayedReconnect() {
     setTimeout(() => {
+        console.log('Attempting reconnect...');
         connectionAttempts++;
         connectWs().catch(console.log);
-    }, connectionAttempts >= 5 ? 10000 : 1000);
+    }, connectionAttempts >= 5 ? 10000 : 2000);
 }
 
 async function connectWs() {
@@ -33,6 +34,9 @@ async function connectWs() {
             reject(e);
         }
         ws.on('message', (msg) => {
+            if (msg.event === 'ready') {
+                resolve(true);
+            }
             if (msg.event === 'disconnect') {
                 console.log(msg);
                 process.exit(1);
@@ -42,15 +46,13 @@ async function connectWs() {
             console.log('Connected!');
             announce();
             connectionAttempts = 0;
-            resolve(true);
         });
         ws.on('error', (err) => {
             reject(err);
         });
         ws.on('close', (code, reason) => {
-            console.log(code, reason);
-            console.log('Lost connection!');
-            console.log('Attempting reconnect...');
+            console.log(`CODE: ${code}`);
+            console.log(`REASON: ${reason}`);
             delayedReconnect();
         });
     });
