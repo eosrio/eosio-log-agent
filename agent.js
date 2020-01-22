@@ -34,11 +34,12 @@ async function connectWs() {
             reject(e);
         }
         ws.on('message', (msg) => {
-            if (msg.event === 'ready') {
+            const data = JSON.parse(msg);
+            if (data.event === 'ready') {
                 resolve(true);
             }
-            if (msg.event === 'disconnect') {
-                console.log(msg);
+            if (data.event === 'disconnect') {
+                console.log(data);
                 process.exit(1);
             }
         });
