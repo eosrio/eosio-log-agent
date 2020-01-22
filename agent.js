@@ -33,7 +33,10 @@ async function connectWs() {
             reject(e);
         }
         ws.on('message', (msg) => {
-            console.log(msg);
+            if (msg.event === 'disconnect') {
+                console.log(msg);
+                process.exit(1);
+            }
         });
         ws.on('open', () => {
             console.log('Connected!');
