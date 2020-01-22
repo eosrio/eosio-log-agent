@@ -90,6 +90,7 @@ function startStreamingLogs() {
         log_tail.on('error', (error) => {
             console.log('ERROR: ', error);
         });
+        console.log('stream started');
     } else {
         console.error('log file not found!');
         process.exit(1);
@@ -98,6 +99,7 @@ function startStreamingLogs() {
 
 setInterval(() => {
     if (last_timestamp + 5000 < Date.now()) {
+        console.log('restarting tail');
         log_tail.unwatch();
         startStreamingLogs();
     }
