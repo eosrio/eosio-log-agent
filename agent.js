@@ -1,7 +1,6 @@
 const WebSocket = require('ws');
 const Tail = require('tail').Tail;
 const fs = require('fs');
-
 const config = require("./config.json");
 
 let ws;
@@ -11,9 +10,16 @@ function announce() {
     ws.send(JSON.stringify({
         event: 'announce',
         agent_ts: Date.now(),
-        agent_id: config.agent_id,
+        token: config.connection_token,
         agent_name: config.owner
     }));
+}
+
+function delayedReconnect() {
+    setTimeout(() => {
+        connectionAttempts++;
+        connectWs().catch(console.log);
+    }, connectionAttempts >= 5 ? 10000 : 1000);
 }
 
 async function connectWs() {
@@ -41,10 +47,7 @@ async function connectWs() {
             console.log(code, reason);
             console.log('Lost connection!');
             console.log('Attempting reconnect...');
-            setTimeout(() => {
-                connectionAttempts++;
-                connectWs();
-            }, connectionAttempts >= 5 ? 10000 : 1000);
+            delayedReconnect();
         });
     });
 }
@@ -59,11 +62,13 @@ function startStreamingLogs() {
             const payload = {
                 event: 'log_line',
                 agent_ts: Date.now(),
+                agent_id: config.agent_id,
+                chain: config.chain_id,
+                node_type: config.node_type,
                 full_line: line
             };
             ws.send(JSON.stringify(payload));
         });
-
         log_tail.on('error', (error) => {
             console.log('ERROR: ', error);
         });
