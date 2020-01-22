@@ -67,7 +67,13 @@ function startStreamingLogs() {
                 node_type: config.node_type,
                 full_line: line
             };
-            ws.send(JSON.stringify(payload));
+            if (ws.readyState === WebSocket.OPEN) {
+                try {
+                    ws.send(JSON.stringify(payload));
+                } catch (e) {
+                    console.log(e);
+                }
+            }
         });
         log_tail.on('error', (error) => {
             console.log('ERROR: ', error);
