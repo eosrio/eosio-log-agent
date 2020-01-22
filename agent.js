@@ -96,6 +96,13 @@ function startStreamingLogs() {
     }
 }
 
+setInterval(() => {
+    if (last_timestamp + 5000 < Date.now()) {
+        log_tail.unwatch();
+        startStreamingLogs();
+    }
+}, 1000);
+
 async function main() {
     let connected;
     try {
