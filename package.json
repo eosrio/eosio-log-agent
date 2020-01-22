@@ -1,0 +1,24 @@
+{
+  "name": "eosio-log-agent",
+  "version": "1.0.0",
+  "description": "",
+  "main": "agent.js",
+  "scripts": {
+    "start": "node agent.js",
+    "relay": "node relay.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eosrio/eosio-log-agent.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eosrio/eosio-log-agent/issues"
+  },
+  "homepage": "https://github.com/eosrio/eosio-log-agent#readme",
+  "dependencies": {
+    "ws": "7.2.1",
+    "tail": "2.0.3"
+  }
+}

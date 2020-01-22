@@ -1,0 +1,6 @@
+{
+  "owner": "producer_name",
+  "connection_token": "000000000000000001",
+  "relay_port": 4000,
+  "log_server": "ws://hyperion.eosrio.io/global/logs"
+}
