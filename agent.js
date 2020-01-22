@@ -51,9 +51,10 @@ async function connectWs() {
             reject(err);
         });
         ws.on('close', (code, reason) => {
-            console.log(`CODE: ${code}`);
-            console.log(`REASON: ${reason}`);
-            delayedReconnect();
+            console.log(`Closed connection, CODE: ${code} | REASON: ${reason}`);
+            if (code !== 4001) {
+                delayedReconnect();
+            }
         });
     });
 }
