@@ -61,11 +61,14 @@ async function connectWs() {
 }
 
 let log_tail;
+let last_timestamp = 0;
 
 function startStreamingLogs() {
     const log_path = config.log_file;
     if (fs.existsSync(log_path)) {
-        log_tail = new Tail(log_path);
+        log_tail = new Tail(log_path, {
+            follow: true
+        });
         log_tail.on('line', (line) => {
             const payload = {
                 event: 'log_line',
