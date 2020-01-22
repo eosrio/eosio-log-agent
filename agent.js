@@ -11,6 +11,7 @@ function announce() {
         event: 'announce',
         agent_ts: Date.now(),
         token: config.connection_token,
+        chain: config.chain_id,
         agent_name: config.owner
     }));
 }
