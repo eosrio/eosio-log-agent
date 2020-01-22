@@ -70,6 +70,7 @@ function startStreamingLogs() {
             follow: true
         });
         log_tail.on('line', (line) => {
+            last_timestamp = Date.now();
             const payload = {
                 event: 'log_line',
                 agent_ts: Date.now(),
